@@ -1,0 +1,92 @@
+﻿<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon-alt-srt.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Drone pursuit · Wine Dynamics</title>
+  </head>
+  <body>
+    <div class="main" id="main">
+      <button class="badge glass-btn" id="badge">
+        <img src="/favicon-alt-srt.svg" alt="W" class="logo" id="logo">
+        <div class="badge-cont" id="badge-cont">
+          <p class="hyper">Powered by:</p>
+          <h1 class="title">Wine Dynamics</h1>
+          <p class="sub">pre alpha</p>
+        </div>
+      </button>
+      <div class="sim"><canvas id="simulation-canvas" tabindex="0" aria-label="Cyclic drone pursuit simulation" aria-describedby="camera-hint"></canvas><button id="center-view" class="glass-btn camera-center" type="button" data-i18n="recenter">Center</button><div class="canvas-guidance"><span id="camera-hint" data-i18n="navigateCentered">Scroll to zoom · center locked</span><button type="button" class="help-button" data-help="camera">(?)</button></div></div>
+      <div class="cfg">
+        <div class="cfg-content">
+          <header class="cfg-heading">
+            <span class="label-help"><span data-i18n="pursuit">Cyclic pursuit</span><button type="button" class="help-button" data-help="controls">(?)</button></span>
+            <label class="language-control"><span class="visually-hidden" data-i18n="language">Language</span>
+              <select id="language"><option value="en" lang="en">English</option><option value="ru" lang="ru">Русский</option><option value="ro" lang="ro">Română</option></select>
+            </label>
+          </header>
+          <div class="stat-container" id="stat-container">
+            <span class="stat"><span class="stat-label"><span data-i18n="time">Time</span><button id="time-help" type="button" class="help-button" data-help="time">(?)</button></span><output id="stat-time">0.00 s</output></span>
+            <span class="stat"><span class="stat-label"><span data-i18n="distance">Drone distance</span><button id="distance-help" type="button" class="help-button" data-help="distance">(?)</button></span><output id="stat-distance"></output></span>
+            <span class="stat"><span class="stat-label"><span data-i18n="radius">Radius</span><button id="radius-help" type="button" class="help-button" data-help="radius">(?)</button></span><output id="stat-radius"></output></span>
+            <span class="stat"><span class="stat-label"><span data-i18n="travelled">Travelled</span><button id="travelled-help" type="button" class="help-button" data-help="travelled">(?)</button></span><output id="stat-travelled"></output></span>
+            <span class="stat"><span class="stat-label"><span data-i18n="meeting">Meeting</span><button id="meeting-help" type="button" class="help-button" data-help="meeting">(?)</button></span><output id="stat-meeting"></output></span>
+            <span class="stat stat-state"><span class="stat-label"><span data-i18n="state">State</span><button id="state-help" type="button" class="help-button" data-help="state">(?)</button></span><output id="stat-outcome"></output></span>
+          </div>
+          <form class="settings" id="settings">
+            <div class="setting">
+              <div class="setting-heading"><label for="drone-count"><span data-i18n="shape">Shape</span><output id="polygon-label"></output></label><button type="button" class="help-button" data-help="shape">(?)</button></div>
+              <input id="drone-count" type="range" min="3" max="257" value="4" step="1">
+            </div>
+            <div class="setting">
+              <div class="setting-heading"><label for="speed"><span data-i18n="speed">Speed</span><output id="speed-label"></output></label><button type="button" class="help-button" data-help="speed">(?)</button></div>
+              <input id="speed" type="range" min="0.1" max="50" step="0.1" value="2">
+            </div>
+            <div class="setting">
+              <div class="setting-heading"><label for="size-mode" data-i18n="measurement">Measure by</label><button type="button" class="help-button" data-help="measurement">(?)</button></div>
+              <select id="size-mode"><option value="side" data-i18n="side">Side length</option><option value="perimeter" data-i18n="perimeter">Perimeter / circumference</option></select>
+              <div class="setting-heading"><label for="size"><span id="length-label">Side length</span><output id="size-label"></output></label><button type="button" class="help-button" data-help="measurement">(?)</button></div>
+              <input id="size" type="range" min="0.1" max="100" step="any" value="20">
+            </div>
+            <div class="setting">
+              <div class="setting-heading"><label for="zoom"><span data-i18n="zoom">Zoom</span><output id="zoom-label">100%</output></label><button type="button" class="help-button" data-help="zoom">(?)</button></div>
+              <input id="zoom" type="range" min="-2" max="7" value="0" step="0.01">
+            </div>
+            <div class="render-settings">
+              <div class="toggle-row"><label class="toggle" for="off-center"><span data-i18n="offCenter">Off-center navigation</span><input id="off-center" type="checkbox"><span class="toggle-indicator" aria-hidden="true"></span></label><button type="button" class="help-button" data-help="offCenter">(?)</button></div>
+              <div class="toggle-row"><label class="toggle" for="auto-zoom"><span data-i18n="autoZoom">Auto zoom</span><input id="auto-zoom" type="checkbox" checked><span class="toggle-indicator" aria-hidden="true"></span></label><button type="button" class="help-button" data-help="autoZoom">(?)</button></div>
+              <div class="toggle-row"><label class="toggle" for="trails"><span data-i18n="trails">Drone trails</span><input id="trails" type="checkbox" checked><span class="toggle-indicator" aria-hidden="true"></span></label><button type="button" class="help-button" data-help="trails">(?)</button></div>
+              <div class="toggle-row"><label class="toggle" for="outline"><span data-i18n="outline">Polygon outline</span><input id="outline" type="checkbox" checked><span class="toggle-indicator" aria-hidden="true"></span></label><button type="button" class="help-button" data-help="outline">(?)</button></div>
+              <div class="toggle-row"><label class="toggle" for="center"><span data-i18n="center">Center point</span><input id="center" type="checkbox" checked><span class="toggle-indicator" aria-hidden="true"></span></label><button type="button" class="help-button" data-help="center">(?)</button></div>
+              <div class="toggle-row"><label class="toggle" for="vectors"><span data-i18n="vectors">Velocity vectors</span><input id="vectors" type="checkbox"><span class="toggle-indicator" aria-hidden="true"></span></label><button type="button" class="help-button" data-help="vectors">(?)</button></div>
+            </div>
+            <div class="physics-section"><button type="button" class="help-button section-help" data-help="physics">(?)</button><details class="physics-notes">
+              <summary data-i18n="details">Physics & accuracy</summary>
+              <p id="physics-detail"></p>
+              <div class="note-row"><p id="accuracy"></p><button type="button" class="help-button" data-help="accuracy">(?)</button></div>
+              <p data-i18n="hint">Shape and size changes reset the run. Speed changes apply immediately. Manual zoom disables auto zoom.</p>
+            </details></div>
+          </form>
+        </div>
+        <div class="ctrl-container" id="ctrl-container">
+          <button class="glass-btn sw-btn" id="switch-btn">
+            <span data-i18n="switch">Switch</span>
+            <img src="/icons/exchange.svg" alt="">
+          </button>
+          <div class="play-control" id="play-control">
+            <button class="glass-btn stop-btn" id="stop-btn">
+              <img id="stop-icon" src="/icons/stop.svg" alt="Stop">
+            </button>
+            <button class="glass-btn play-btn" id="play-btn">
+              <img id="play-icon" src="/icons/play.svg" alt="Play">
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <dialog id="help-dialog" aria-labelledby="help-title" aria-describedby="help-body"><h2 id="help-title"></h2><p id="help-body"></p><button id="help-close" type="button" autofocus>Close</button></dialog>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
+
+
