@@ -79,7 +79,7 @@ function updateStats() {
 function updateButtons() {
     const running = simulation.state === 'RUNNING';
     const active = simulation.state !== 'INITIAL';
-    playIcon.src = running ? '/icons/pause.svg' : '/icons/play.svg';
+    playIcon.src = running ? './icons/pause.svg' : './icons/play.svg';
     playIcon.alt = t(running ? 'pause' : 'play');
     playBtn.setAttribute('aria-label', t(running ? 'pause' : simulation.state === 'COMPLETE' ? 'replay' : 'play'));
     stopBtn.setAttribute('aria-label', t('stop'));
