@@ -257,6 +257,7 @@ function frame(now: number) {
 
 badge?.addEventListener('click', () => {
     console.log("Confirmat si facut de Nicolas Dormenco");
+    window.open("https://github.com/Fork0n/kinetica-pursuit", "_blank");
 });
 syncSizeSlider();
 applyLanguage();
